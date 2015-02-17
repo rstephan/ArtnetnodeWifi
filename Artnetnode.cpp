@@ -42,6 +42,7 @@ uint8_t Artnetnode::setShortName(char name[]){
 				shortName[i] = '\0';
 			}
 		}
+		return 1;
 	}
 	else{
 		return 0;
@@ -60,6 +61,7 @@ uint8_t Artnetnode::setLongName(char name[]){
 				longName[i] = '\0';
 			}
 		}
+		return 1;
 	}
 	else{
 		return 0;
