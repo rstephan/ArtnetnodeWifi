@@ -99,8 +99,6 @@ uint16_t Artnetnode::read(){
   if (packetSize <= ARTNET_MAX_BUFFER && packetSize > 0){ 
       Udp.read(artnetPacket, ARTNET_MAX_BUFFER);
 
-      Serial.println(Udp.destIP());
-
       // Check packetID equals "Art-Net"
       for (int i = 0 ; i < 9 ; i++){
         if (artnetPacket[i] != ARTNET_ID[i])
