@@ -66,11 +66,16 @@ private:
   uint8_t artnetPacket[ARTNET_MAX_BUFFER];
   uint16_t packetSize;
   uint16_t opcode;
+  IPAddress localIP;
+  IPAddress localMask;
+  IPAddress localBroadcast;
+
+  // Packet functions
+  bool isBroadcast();
 
   // DMX settings
   bool DMXOutputStatus;
   uint16_t DMXOutputs[DMX_MAX_OUTPUTS][3];
-
   uint8_t DMXBuffer[DMX_MAX_OUTPUTS][DMX_MAX_BUFFER];
 
   // DMX tick
