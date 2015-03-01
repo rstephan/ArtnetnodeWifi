@@ -23,15 +23,15 @@ Artnetnode::Artnetnode() {
   Ethernet.enableLinkLed();
   Ethernet.enableActivityLed();
 
-	// Initalise DMXOutput array
-	for(int i = 0; i < DMX_MAX_OUTPUTS; i++){
-		DMXOutputs[i][0] = -1;
-		DMXOutputs[i][1] = -1;
-		DMXOutputs[i][2] = 0;
-	}
-	
+  // Initalise DMXOutput array
+  for(int i = 0; i < DMX_MAX_OUTPUTS; i++){
+    DMXOutputs[i][0] = -1;
+    DMXOutputs[i][1] = -1;
+    DMXOutputs[i][2] = 0;
+  }
+
   // Start DMX tick clock
-	msSinceDMXSend = 0;
+  msSinceDMXSend = 0;
 
   // Init DMX buffers
   for(int i = 0; i < DMX_MAX_OUTPUTS; i++){
@@ -43,53 +43,53 @@ Artnetnode::Artnetnode() {
 
 uint8_t Artnetnode::begin(byte mac[], uint8_t numOutputs){
   if(Ethernet.begin(mac)){
-	  Udp.begin(ARTNET_PORT);
+    Udp.begin(ARTNET_PORT);
     localIP = Ethernet.localIP();
     localMask = Ethernet.subnetMask();
     localBroadcast = IPAddress(localIP | ~localMask);
-	  return 1;
-	}
-	else{
-		return 0;
-	}
+    return 1;
+  }
+  else{
+    return 0;
+  }
 }
 
 uint8_t Artnetnode::setShortName(char name[]){
-	// Check name is short enough
-	int nameLength = sizeof(name);
-	if(nameLength<=ARTNET_SHORT_NAME_MAX_LENGTH && nameLength > 0){
-		for(int i = 0; i<ARTNET_SHORT_NAME_MAX_LENGTH+1; i++){
-			if(i<nameLength){
-				shortName[i] = name[i];
-			}
-			else{
-				shortName[i] = '\0';
-			}
-		}
-		return 1;
-	}
-	else{
-		return 0;
-	}
+  // Check name is short enough
+  int nameLength = sizeof(name);
+  if(nameLength<=ARTNET_SHORT_NAME_MAX_LENGTH && nameLength > 0){
+    for(int i = 0; i<ARTNET_SHORT_NAME_MAX_LENGTH+1; i++){
+      if(i<nameLength){
+        shortName[i] = name[i];
+      }
+      else{
+        shortName[i] = '\0';
+      }
+    }
+    return 1;
+  }
+  else{
+    return 0;
+  }
 }
 
 uint8_t Artnetnode::setLongName(char name[]){
-	// Check name is short enough
-	int nameLength = sizeof(name);
-	if(nameLength<=ARTNET_LONG_NAME_MAX_LENGTH && nameLength > 0){
-		for(int i = 0; i<ARTNET_LONG_NAME_MAX_LENGTH+1; i++){
-			if(i<nameLength){
-				longName[i] = name[i];
-			}
-			else{
-				longName[i] = '\0';
-			}
-		}
-		return 1;
-	}
-	else{
-		return 0;
-	}
+  // Check name is short enough
+  int nameLength = sizeof(name);
+  if(nameLength<=ARTNET_LONG_NAME_MAX_LENGTH && nameLength > 0){
+    for(int i = 0; i<ARTNET_LONG_NAME_MAX_LENGTH+1; i++){
+      if(i<nameLength){
+        longName[i] = name[i];
+      }
+      else{
+        longName[i] = '\0';
+      }
+    }
+    return 1;
+  }
+  else{
+    return 0;
+  }
 }
 
 uint16_t Artnetnode::read(){
@@ -354,16 +354,16 @@ void Artnetnode::disableDMXOutput(uint8_t outputID){
 }
 
 uint8_t Artnetnode::setDMXOutput(uint8_t outputID, uint8_t uartNum, uint16_t attachedUniverse){
-	// Validate input
-	if(outputID>-1 && uartNum>-1 && attachedUniverse>-1){
-		DMXOutputs[outputID][0] = uartNum;
-		DMXOutputs[outputID][1] = attachedUniverse;
-		DMXOutputs[outputID][2] = 0;
-		return 1;
-	}
-	else{
-		return 0;
-	}
+  // Validate input
+  if(outputID>-1 && uartNum>-1 && attachedUniverse>-1){
+    DMXOutputs[outputID][0] = uartNum;
+    DMXOutputs[outputID][1] = attachedUniverse;
+    DMXOutputs[outputID][2] = 0;
+    return 1;
+  }
+  else{
+    return 0;
+  }
 }
 
 void Artnetnode::tickDMX(uint32_t time){
