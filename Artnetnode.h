@@ -28,11 +28,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "PriorityCodes.h"
 #include "ProtocolSettings.h"
 
+
 class Artnetnode{
 public:
   Artnetnode();
 
-  uint8_t begin(byte mac[]);
+  uint8_t begin(byte mac[], uint8_t numOutputs);
   uint16_t read();
 
   // Node identity
@@ -40,9 +41,15 @@ public:
   uint8_t setLongName(char name[]);
 
   // DMX controls
-  uint8_t enableDMX();
-  uint8_t disableDMX();
-  
+  void enableDMX();
+  void disableDMX();
+  void enableDMXOutput(uint8_t outputID);
+  void disableDMXOutput(uint8_t outputID);
+
+  uint8_t setDMXOutput(uint8_t outputID, uint8_t uartNum, uint16_t attachedUniverse);
+
+  // DMX tick
+  void tickDMX(uint32_t time);
 
 private:
   EthernetUDP Udp;
@@ -59,9 +66,23 @@ private:
   uint8_t artnetPacket[ARTNET_MAX_BUFFER];
   uint16_t packetSize;
   uint16_t opcode;
+  IPAddress localIP;
+  IPAddress localMask;
+  IPAddress localBroadcast;
+
+  // Packet functions
+  bool isBroadcast();
 
   // DMX settings
   bool DMXOutputStatus;
+  uint16_t DMXOutputs[DMX_MAX_OUTPUTS][3];
+  uint8_t DMXBuffer[DMX_MAX_OUTPUTS][DMX_MAX_BUFFER];
+
+  // DMX tick
+  void sendDMX();
+  void uartDMX(uint8_t outputID, uint8_t uartNum);
+  uint8_t* getDmxFrame(uint8_t outputID);
+  uint8_t msSinceDMXSend;
 };
 
 #endif
