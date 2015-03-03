@@ -198,6 +198,7 @@ uint8_t Artnetnode::setDMXOutput(uint8_t outputID, uint8_t uartNum, uint16_t att
     DMXOutputs[outputID][0] = uartNum;
     DMXOutputs[outputID][1] = attachedUniverse;
     DMXOutputs[outputID][2] = 0;
+    PollReplyPacket.setSwOut(outputID, attachedUniverse);
     return 1;
   }
   else{
