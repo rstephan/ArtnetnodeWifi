@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "StyleCodes.h"
 #include "PriorityCodes.h"
 #include "ProtocolSettings.h"
+#include "PollReply.h"
 
 
 class Artnetnode{
@@ -39,6 +40,9 @@ public:
   // Node identity
   uint8_t setShortName(char name[]);
   uint8_t setLongName(char name[]);
+  uint8_t setName(char name[]);
+
+  uint8_t setStartingUniverse(uint16_t startingUniverse);
 
   // DMX controls
   void enableDMX();
@@ -53,10 +57,7 @@ public:
 
 private:
   EthernetUDP Udp;
-
-  // Node identity
-  char shortName[ARTNET_SHORT_NAME_MAX_LENGTH+1];
-  char longName[ARTNET_LONG_NAME_MAX_LENGTH+1];
+  PollReply PollReplyPacket;
 
   // Packet handlers
   uint16_t handleDMX();
@@ -77,6 +78,8 @@ private:
   bool DMXOutputStatus;
   uint16_t DMXOutputs[DMX_MAX_OUTPUTS][3];
   uint8_t DMXBuffer[DMX_MAX_OUTPUTS][DMX_MAX_BUFFER];
+
+  uint16_t startingUniverse;
 
   // DMX tick
   void sendDMX();
