@@ -1,0 +1,20 @@
+# Datatypes
+
+ArtnetnodeWifi	KEYWORD1
+
+# Methods
+
+begin	KEYWORD2
+read	KEYWORD2
+setShortName	KEYWORD2
+setLongName	KEYWORD2
+setName	KEYWORD2
+setStartingUniverse	KEYWORD2
+enableDMX	KEYWORD2
+disableDMX	KEYWORD2
+enableDMXOutput	KEYWORD2
+disableDMXOutput	KEYWORD2
+setDMXOutput	KEYWORD2
+tickDMX	KEYWORD2
+getDmxFrame	KEYWORD2
+setArtDmxCallback	KEYWORD2
