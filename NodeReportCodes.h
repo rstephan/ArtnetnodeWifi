@@ -1,7 +1,6 @@
-// List of hex values and discriptions of Node Report Codes
-
 #ifndef NODEREPORTCODES_H
 #define NODEREPORTCODES_H
+// List of hex values and discriptions of Node Report Codes
 
 #define RcDebug        0x0000  // Booted in debug mode (Only used in development)
 #define RcPowerOk      0x0001  // Power On Tests successful

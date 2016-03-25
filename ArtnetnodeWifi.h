@@ -1,6 +1,11 @@
+#ifndef ARTNETNODEWIFI_H
+#define ARTNETNODEWIFI_H
 /*
 
 Copyright (c) Charles Yarnold charlesyarnold@gmail.com 2015
+
+Copyright (c) 2016 Stephan Ruloff
+https://github.com/rstephan
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,12 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#ifndef ARTNETNODE_H
-#define ARTNETNODE_H
-
-#include "Energia.h"
-#include <Ethernet.h>
-#include <EthernetUdp.h>
+#include <Arduino.h>
+#include <ESP8266WiFi.h>
+#include <WiFiUDP.h>
 #include "OpCodes.h"
 #include "NodeReportCodes.h"
 #include "StyleCodes.h"
@@ -29,18 +31,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "ProtocolSettings.h"
 #include "PollReply.h"
 
+// Packet
+#define ART_NET_ID "Art-Net\0"
+#define ART_DMX_START 18
 
-class Artnetnode{
+class ArtnetnodeWifi
+{
 public:
-  Artnetnode();
+  ArtnetnodeWifi();
 
-  uint8_t begin(byte mac[], uint8_t numOutputs);
+  uint8_t begin(void);
   uint16_t read();
 
   // Node identity
-  uint8_t setShortName(char name[]);
-  uint8_t setLongName(char name[]);
-  uint8_t setName(char name[]);
+  uint8_t setShortName(const char name[]);
+  uint8_t setLongName(const char name[]);
+  uint8_t setName(const char name[]);
 
   uint8_t setStartingUniverse(uint16_t startingUniverse);
 
@@ -54,13 +60,24 @@ public:
 
   // DMX tick
   void tickDMX(uint32_t time);
+  
+  // Return a pointer to the start of the DMX data
+  inline uint8_t* getDmxFrame(void)
+  {
+    return artnetPacket + ART_DMX_START;
+  }
+
+  inline void setArtDmxCallback(void (*fptr)(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* data)) 
+  {
+    artDmxCallback = fptr;
+  }
 
 private:
-  EthernetUDP Udp;
+  WiFiUDP Udp;
   PollReply PollReplyPacket;
 
   // Packet handlers
-  uint16_t handleDMX();
+  uint16_t handleDMX(uint8_t nzs);
   uint16_t handlePollRequest();
   
   // Packet vars
@@ -83,9 +100,11 @@ private:
 
   // DMX tick
   void sendDMX();
-  void uartDMX(uint8_t outputID, uint8_t uartNum);
   uint8_t* getDmxFrame(uint8_t outputID);
   uint8_t msSinceDMXSend;
+
+  void (*artDmxCallback)(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* data);
+
 };
 
 #endif

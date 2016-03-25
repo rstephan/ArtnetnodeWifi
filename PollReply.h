@@ -1,3 +1,5 @@
+#ifndef POLLREPLY_H
+#define POLLREPLY_H
 /*
 
 Copyright (c) Charles Yarnold charlesyarnold@gmail.com 2015
@@ -18,17 +20,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Class for saving details to and for constructing pollreply packets
 
-#include "Energia.h"
-#include <Ethernet.h>
-#include <EthernetUdp.h>
+#include <Arduino.h>
+#include <WiFiUDP.h>
 #include "OpCodes.h"
 #include "NodeReportCodes.h"
 #include "StyleCodes.h"
 #include "PriorityCodes.h"
 #include "ProtocolSettings.h"
-
-#ifndef POLLREPLY_H
-#define POLLREPLY_H
 
 struct replyPollPacket{
   char ID[8] = "Art-Net"; // protocol ID = "Art-Net"
@@ -163,8 +161,8 @@ public:
 
   void setMac(byte mac[]);
   void setIP(IPAddress IP);
-  void setShortName(char name[]);
-  void setLongName(char name[]);
+  void setShortName(const char name[]);
+  void setLongName(const char name[]);
 
   void setNumPorts(uint8_t num);
 

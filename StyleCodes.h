@@ -1,7 +1,6 @@
-// List of hex values and discriptions of Style Codes
-
 #ifndef STYLECODES_H
 #define STYLECODES_H
+// List of hex values and discriptions of Style Codes
 
 #define StNode       0x00  // A DMX to / from Art-Net device
 #define StController 0x01  // A lighting console.

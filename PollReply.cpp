@@ -2,6 +2,9 @@
 
 Copyright (c) Charles Yarnold charlesyarnold@gmail.com 2015
 
+Copyright (c) 2016 Stephan Ruloff
+https://github.com/rstephan
+
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, under version 2 of the License.
@@ -48,21 +51,23 @@ void PollReply::setIP(IPAddress IP){
   packet.IPAddr[3] = IP[3];
 }
 
-void PollReply::setShortName(char name[]){
+void PollReply::setShortName(const char name[]){
   int shortNameLen = sizeof(packet.ShortName);
 
   memset(packet.ShortName, 0, shortNameLen);
 
+  shortNameLen--;
   for(int i = 0; i < shortNameLen && name[i] != 0; i++){
     packet.ShortName[i] = name[i];
   }
 }
 
-void PollReply::setLongName(char name[]){
+void PollReply::setLongName(const char name[]){
   int longNameLen = sizeof(packet.LongName);
 
   memset(packet.LongName, 0, longNameLen);
 
+  longNameLen--;
   for(int i = 0; i < longNameLen && name[i] != 0; i++){
     packet.LongName[i] = name[i];
   }

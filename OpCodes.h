@@ -1,7 +1,6 @@
-// List of hex values and discriptions of Opcodes
-
 #ifndef OPCODES_H
 #define OPCODES_H
+// List of hex values and discriptions of Opcodes
 
 #define OpPoll             0x2000  // This is an ArtPoll packet, no other data is contained in this UDP packet
 #define OpPollReply        0x2100  // This is an ArtPollReply Packet. It contains device status information.
