@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Class for saving details to and for constructing pollreply packets
 
 #include <Arduino.h>
-#include <WiFiUDP.h>
+#include <WiFiUdp.h>
 #include "OpCodes.h"
 #include "NodeReportCodes.h"
 #include "StyleCodes.h"
