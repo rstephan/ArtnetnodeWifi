@@ -1,6 +1,7 @@
 /*
 Example Artnet RGB LED, 3 LED (one per color) react on ArtNet messages from a master.
 Charles Yarnold 2015 - charlesyarnold@gmail.com
+https://github.com/solexious/ESP8266_artnet_led_node
 
 Stephan Ruloff 2016
 https://github.com/rstephan
@@ -48,7 +49,7 @@ boolean ConnectWifi(void)
     }
     i++;
   }
-  if (state){
+  if (state) {
     Serial.println("");
     Serial.print("Connected to ");
     Serial.println(ssid);
@@ -64,7 +65,6 @@ boolean ConnectWifi(void)
 
 void beat()
 {
-
   UdpSend.beginPacket({192,168,0,100},33333);
   UdpSend.write(udpBeatPacket, sizeof(udpBeatPacket)-1);
   //Udp.write("{\"mac\":\"f6:8b:d9:c2:9a:69\",\"ip\":\"192.168.1.75\",\"voltage\":579}");
@@ -118,18 +118,17 @@ void loop()
 { 
   uint16_t code = artnetnode.read();
   if (code) {
-    if (code == OpDmx)
-    {
+    if (code == OpDmx) {
       //Serial.print("D");
-      //analogWrite(pinR, artnetnode.returnDMXValue(0, 1));
-      //analogWrite(pinG, artnetnode.returnDMXValue(0, 2));
-      //analogWrite(pinB, artnetnode.returnDMXValue(0, 3));
+      analogWrite(pinR, artnetnode.getDmxFrame()[0]);
+      analogWrite(pinG, artnetnode.getDmxFrame()[1]);
+      analogWrite(pinB, artnetnode.getDmxFrame()[2]);
     }
     else if (code == OpPoll) {
       Serial.println("Art Poll Packet");
     }
   }
-  if (WiFi.status() == 6){
+  if (WiFi.status() == 6) {
     ESP.reset();
   }
 }
