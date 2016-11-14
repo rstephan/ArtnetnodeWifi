@@ -9,20 +9,13 @@ https://github.com/rstephan
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 #include <ArtnetnodeWifi.h>
-#include <Ticker.h>
-
-#define DMX_MAX 512 // max. number of DMX data packages.
-uint8_t DMXBuffer[DMX_MAX];
 
 //Wifi settings
 const char* ssid = "ssid";
 const char* password = "pAsSwOrD";
 
-Ticker ticker;
-WiFiUDP UdpSend;
 ArtnetnodeWifi artnetnode;
 
-char udpBeatPacket[70];
 int pinR = 15;
 int pinG = 12;
 int pinB = 13;
@@ -37,7 +30,7 @@ boolean ConnectWifi(void)
   WiFi.begin(ssid, password);
   Serial.println("");
   Serial.println("Connecting to WiFi");
-  
+
   // Wait for connection
   Serial.print("Connecting");
   while (WiFi.status() != WL_CONNECTED) {
@@ -59,16 +52,8 @@ boolean ConnectWifi(void)
     Serial.println("");
     Serial.println("Connection failed.");
   }
-  
-  return state;
-}
 
-void beat()
-{
-  UdpSend.beginPacket({192,168,0,100},33333);
-  UdpSend.write(udpBeatPacket, sizeof(udpBeatPacket)-1);
-  //Udp.write("{\"mac\":\"f6:8b:d9:c2:9a:69\",\"ip\":\"192.168.1.75\",\"voltage\":579}");
-  UdpSend.endPacket();
+  return state;
 }
 
 void setup()
@@ -76,22 +61,15 @@ void setup()
   Serial.begin(115200);
   artnetnode.setName("ESP8266 - Artnet");
   artnetnode.setStartingUniverse(1);
-  
+
   ConnectWifi();
 
-#if 0
-  while(artnetnode.begin(ssid, password, 1) == false){
-    Serial.print("X");
-  }
-#endif
   artnetnode.begin();
 
   Serial.println();
   Serial.println("Connected");
 
   analogWriteRange(255);
-  
-  artnetnode.setDMXOutput(0,1,0);
 
   pinMode(pinR, OUTPUT);
   pinMode(pinG, OUTPUT);
@@ -100,22 +78,10 @@ void setup()
   analogWrite(pinR, 0);
   analogWrite(pinG, 0);
   analogWrite(pinB, 0);
-
-  UdpSend.begin(4000);
-  IPAddress localIP = WiFi.localIP();
-  
-  uint8_t mac[6];
-  WiFi.macAddress(mac);
-    
-  sprintf(udpBeatPacket, "{\"mac\":\"%x:%x:%x:%x:%x:%x\",\"ip\":\"%d.%d.%d.%d\",\"voltage\":1}", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5], localIP[0],  localIP[1],  localIP[2],  localIP[3]);
-  //Serial.println();
-  //Serial.println(udpBeatPacket);
-  ticker.attach(5, beat);
-  beat();
 }
 
 void loop()
-{ 
+{
   uint16_t code = artnetnode.read();
   if (code) {
     if (code == OpDmx) {
@@ -131,4 +97,5 @@ void loop()
   if (WiFi.status() == 6) {
     ESP.reset();
   }
+  yield();
 }
