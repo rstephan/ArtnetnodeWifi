@@ -32,7 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "PollReply.h"
 
 // Packet
-#define ART_NET_ID "Art-Net\0"
+#define ART_NET_ID "Art-Net"
 #define ART_DMX_START 18
 
 class ArtnetnodeWifi
@@ -104,7 +104,7 @@ private:
   uint8_t msSinceDMXSend;
 
   void (*artDmxCallback)(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* data);
-
+  static const char artnetId[];
 };
 
 #endif

@@ -21,6 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <ArtnetnodeWifi.h>
 
+
+const char ArtnetnodeWifi::artnetId[] = ART_NET_ID;
+
 ArtnetnodeWifi::ArtnetnodeWifi()
 {
   // Initalise DMXOutput array
@@ -88,11 +91,9 @@ uint16_t ArtnetnodeWifi::read()
   if (packetSize <= ARTNET_MAX_BUFFER && packetSize > 0) {
     Udp.read(artnetPacket, ARTNET_MAX_BUFFER);
 
-    // Check packetID equals "Art-Net"
-    for (int i = 0 ; i < 9 ; i++) {
-      if (artnetPacket[i] != ARTNET_ID[i]) {
-        return 0;
-      }
+    // Check that packetID is "Art-Net" else ignore
+    if (memcmp(artnetPacket, artnetId, sizeof(artnetId)) != 0) {
+      return 0;
     }
 
     opcode = artnetPacket[8] | artnetPacket[9] << 8;
