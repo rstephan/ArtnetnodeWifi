@@ -44,6 +44,7 @@ public:
   void setShortName(const char name[]);
   void setLongName(const char name[]);
   void setName(const char name[]);
+  void setNumPorts(uint8_t num);
 
   void setStartingUniverse(uint16_t startingUniverse);
 

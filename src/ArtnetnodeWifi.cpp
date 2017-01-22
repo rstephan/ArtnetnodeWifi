@@ -79,6 +79,11 @@ void ArtnetnodeWifi::setName(const char name[])
   PollReplyPacket.setLongName(name);
 }
 
+void ArtnetnodeWifi::setNumPorts(uint8_t num)
+{
+  PollReplyPacket.setNumPorts(num);
+}
+
 void ArtnetnodeWifi::setStartingUniverse(uint16_t startingUniverse)
 {
   PollReplyPacket.setStartingUniverse(startingUniverse);
