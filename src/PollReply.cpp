@@ -96,20 +96,20 @@ void PollReply::setNumPorts(uint8_t num){
 }
 
 void PollReply::setSwOut(uint8_t id, uint16_t universe){
-  if(id > -1 && id < 4){
+  if(id < 4){
     packet.SwOut[id] = universe & 0b0000000000001111;
   }
 }
 
 void PollReply::setOutputEnabled(uint8_t port){
-  if(port >= 0 && port < 4){
+  if(port < 4){
     packet.PortTypes[port] = packet.PortTypes[port] | 0b10000000;
     packet.GoodOutput[port] = packet.GoodOutput[port] | 0b10000000;
   }
 }
 
 void PollReply::setOutputDisabled(uint8_t port){
-  if(port >= 0 && port < 4){
+  if(port < 4){
     packet.PortTypes[port] = packet.PortTypes[port] & (~0b10000000);
     packet.GoodOutput[port] = packet.GoodOutput[port] & (~0b10000000);
   }

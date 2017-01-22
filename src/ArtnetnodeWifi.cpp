@@ -22,14 +22,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <ArtnetnodeWifi.h>
 
 
-const char ArtnetnodeWifi::artnetId[] = ART_NET_ID;
+const char ArtnetnodeWifi::artnetId[] = ARTNET_ID;
 
 ArtnetnodeWifi::ArtnetnodeWifi()
 {
   // Initalise DMXOutput array
   for (int i = 0; i < DMX_MAX_OUTPUTS; i++) {
-    DMXOutputs[i][0] = -1;
-    DMXOutputs[i][1] = -1;
+    DMXOutputs[i][0] = 0xFF;
+    DMXOutputs[i][1] = 0xFF;
     DMXOutputs[i][2] = 0;
   }
 
@@ -63,29 +63,31 @@ uint8_t ArtnetnodeWifi::begin(void)
   return 0;
 }
 
-uint8_t ArtnetnodeWifi::setShortName(const char name[])
+void ArtnetnodeWifi::setShortName(const char name[])
 {
   PollReplyPacket.setShortName(name);
 }
 
-uint8_t ArtnetnodeWifi::setLongName(const char name[])
+void ArtnetnodeWifi::setLongName(const char name[])
 {
   PollReplyPacket.setLongName(name);
 }
 
-uint8_t ArtnetnodeWifi::setName(const char name[])
+void ArtnetnodeWifi::setName(const char name[])
 {
   PollReplyPacket.setShortName(name);
   PollReplyPacket.setLongName(name);
 }
 
-uint8_t ArtnetnodeWifi::setStartingUniverse(uint16_t startingUniverse)
+void ArtnetnodeWifi::setStartingUniverse(uint16_t startingUniverse)
 {
   PollReplyPacket.setStartingUniverse(startingUniverse);
 }
 
 uint16_t ArtnetnodeWifi::read()
 {
+  uint8_t startcode;
+
   packetSize = Udp.parsePacket();
 
   if (packetSize <= ARTNET_MAX_BUFFER && packetSize > 0) {
@@ -104,7 +106,10 @@ uint16_t ArtnetnodeWifi::read()
     case OpPoll:
       return handlePollRequest();
     case OpNzs:
-      return handleDMX(1);
+      startcode = artnetPacket[13];
+      if (startcode != 0 && startcode != DMX_RDM_STARTCODE) {
+        return handleDMX(startcode);
+      }
     }
   }
 
@@ -136,7 +141,7 @@ uint16_t ArtnetnodeWifi::handleDMX(uint8_t nzs)
     uint8_t sequence = artnetPacket[12];
 
     if (artDmxCallback) {
-      (*artDmxCallback)(universe, dmxDataLength, sequence, artnetPacket + ART_DMX_START);
+      (*artDmxCallback)(universe, dmxDataLength, sequence, artnetPacket + ARTNET_DMX_START_LOC);
     }
 
     for(int a = 0; a < DMX_MAX_OUTPUTS; a++){
@@ -152,7 +157,11 @@ uint16_t ArtnetnodeWifi::handleDMX(uint8_t nzs)
       }
     }
 
-    return OpDmx;
+    if (nzs) {
+      return OpNzs;
+    } else {
+      return OpDmx;
+    }
   }
 }
 
@@ -213,7 +222,7 @@ void ArtnetnodeWifi::disableDMXOutput(uint8_t outputID)
 uint8_t ArtnetnodeWifi::setDMXOutput(uint8_t outputID, uint8_t uartNum, uint16_t attachedUniverse)
 {
   // Validate input
-  if(outputID>-1 && uartNum>-1 && attachedUniverse>-1){
+  if(outputID < DMX_MAX_OUTPUTS && uartNum != 0xFF && attachedUniverse != 0xFF){
     DMXOutputs[outputID][0] = uartNum;
     DMXOutputs[outputID][1] = attachedUniverse;
     DMXOutputs[outputID][2] = 0;

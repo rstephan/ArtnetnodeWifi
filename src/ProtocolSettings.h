@@ -9,7 +9,7 @@
 #define DMX_MAX_BUFFER 512
 
 // Packet constants
-#define ARTNET_ID "Art-Net\0"
+#define ARTNET_ID "Art-Net"
 #define ARTNET_DMX_START_LOC 18
 
 // Packet confines
@@ -19,5 +19,8 @@
 // DMX settings
 #define DMX_MAX_OUTPUTS 6
 #define DMX_MS_BETWEEN_TICKS 25
+
+// RDM
+#define DMX_RDM_STARTCODE 0xCC
 
 #endif

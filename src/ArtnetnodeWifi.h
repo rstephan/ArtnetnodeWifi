@@ -31,9 +31,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "ProtocolSettings.h"
 #include "PollReply.h"
 
-// Packet
-#define ART_NET_ID "Art-Net"
-#define ART_DMX_START 18
 
 class ArtnetnodeWifi
 {
@@ -44,11 +41,11 @@ public:
   uint16_t read();
 
   // Node identity
-  uint8_t setShortName(const char name[]);
-  uint8_t setLongName(const char name[]);
-  uint8_t setName(const char name[]);
+  void setShortName(const char name[]);
+  void setLongName(const char name[]);
+  void setName(const char name[]);
 
-  uint8_t setStartingUniverse(uint16_t startingUniverse);
+  void setStartingUniverse(uint16_t startingUniverse);
 
   // DMX controls
   void enableDMX();
@@ -64,7 +61,7 @@ public:
   // Return a pointer to the start of the DMX data
   inline uint8_t* getDmxFrame(void)
   {
-    return artnetPacket + ART_DMX_START;
+    return artnetPacket + ARTNET_DMX_START_LOC;
   }
 
   inline void setArtDmxCallback(void (*fptr)(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* data)) 
