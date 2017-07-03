@@ -88,6 +88,7 @@ void setup()
   artnetnode.setShortName("ESP-Art-Net Debug");
   // max. 63 characters
   artnetnode.setLongName("ESP8266 - Art-Net (debug), the long version");
+  artnetnode.setNumPorts(1);
   artnetnode.begin();
 
   // this will be called for each packet received

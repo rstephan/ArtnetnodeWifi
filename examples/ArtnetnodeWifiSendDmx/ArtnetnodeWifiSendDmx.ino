@@ -72,6 +72,7 @@ void setup()
   Serial.begin(115200);
   ConnectWifi();
   artnetnode.setName("ESP8266 - Art-Net");
+  artnetnode.setNumPorts(1);
   artnetnode.begin();
 
   // this will be called for each packet received

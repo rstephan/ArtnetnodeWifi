@@ -60,6 +60,7 @@ void setup()
 {
   Serial.begin(115200);
   artnetnode.setName("ESP8266 - Artnet");
+  artnetnode.setNumPorts(1);
   artnetnode.setStartingUniverse(1);
 
   ConnectWifi();
