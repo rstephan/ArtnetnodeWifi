@@ -1,7 +1,8 @@
 /*
 Example Send DMX, transmit all received ArtNet messages out of the serial port.
 
-Stephan Ruloff 2016
+@author Stephan Ruloff
+@date 2016-2017
 https://github.com/rstephan
 
 */
@@ -56,7 +57,8 @@ void onDmxFrame(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* d
   // Send "break" as a "slow" zero.
   Serial.begin(56700);
   Serial.write(0);
-  Serial.begin(250000);
+  delayMicroseconds(220);
+  Serial.begin(250000, SERIAL_8N2);
   
   Serial.write(0); // Start-Byte
   // send out the buffer
