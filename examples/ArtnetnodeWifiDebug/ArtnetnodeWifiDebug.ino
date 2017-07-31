@@ -1,7 +1,7 @@
 /*
 Example, transmit all received ArtNet messages (DMX) out of the serial port in plain text.
 
-Stephan Ruloff 2016
+Stephan Ruloff 2016-2017
 https://github.com/rstephan
 
 */
@@ -88,7 +88,13 @@ void setup()
   artnetnode.setShortName("ESP-Art-Net Debug");
   // max. 63 characters
   artnetnode.setLongName("ESP8266 - Art-Net (debug), the long version");
-  artnetnode.setNumPorts(1);
+  // set a starting universe if you wish, defaults to 0
+  //artnetnode.setStartingUniverse(4);
+  artnetnode.setNumPorts(4);
+  artnetnode.enableDMXOutput(0);
+  artnetnode.enableDMXOutput(1);
+  artnetnode.enableDMXOutput(2);
+  artnetnode.enableDMXOutput(3);
   artnetnode.begin();
 
   // this will be called for each packet received

@@ -75,6 +75,7 @@ void setup()
   ConnectWifi();
   artnetnode.setName("ESP8266 - Art-Net");
   artnetnode.setNumPorts(1);
+  artnetnode.enableDMXOutput(0);
   artnetnode.begin();
 
   // this will be called for each packet received

@@ -181,7 +181,7 @@ public:
   struct replyPollPacket packet;
 
 private:
-
+  uint16_t startingUniverse;
 };
 
 #endif

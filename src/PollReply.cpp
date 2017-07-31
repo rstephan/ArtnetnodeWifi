@@ -33,6 +33,7 @@ PollReply::PollReply(){
   memset(packet.SwIn, 0, sizeof(packet.SwIn));
   memset(packet.SwOut, 0, sizeof(packet.SwOut));
   memset(packet.Filler, 0, sizeof(packet.Filler));
+  setStartingUniverse(0);
 }
 
 void PollReply::setMac(byte mac[]){
@@ -95,9 +96,9 @@ void PollReply::setNumPorts(uint8_t num){
   packet.NumPortsLo = num;
 }
 
-void PollReply::setSwOut(uint8_t id, uint16_t universe){
-  if(id < 4){
-    packet.SwOut[id] = universe & 0b0000000000001111;
+void PollReply::setSwOut(uint8_t port, uint16_t universe){
+  if(port < 4){
+    packet.SwOut[port] = universe & 0b0000000000001111;
   }
 }
 
@@ -105,6 +106,7 @@ void PollReply::setOutputEnabled(uint8_t port){
   if(port < 4){
     packet.PortTypes[port] = packet.PortTypes[port] | 0b10000000;
     packet.GoodOutput[port] = packet.GoodOutput[port] | 0b10000000;
+    setSwOut(port, startingUniverse + port);
   }
 }
 
@@ -112,10 +114,12 @@ void PollReply::setOutputDisabled(uint8_t port){
   if(port < 4){
     packet.PortTypes[port] = packet.PortTypes[port] & (~0b10000000);
     packet.GoodOutput[port] = packet.GoodOutput[port] & (~0b10000000);
+    setSwOut(port, 0);
   }
 }
 
 void PollReply::setStartingUniverse(uint16_t startUniverse){
+  startingUniverse = startUniverse;
   packet.NetSwitch = startUniverse >> 8;
   packet.SubSwitch = (startUniverse & 0b000000011111111) >> 4;
 }
