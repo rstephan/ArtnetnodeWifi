@@ -116,6 +116,8 @@ uint16_t ArtnetnodeWifi::read()
         return handleDMX(startcode);
       }
     }
+
+    return opcode;
   }
 
   return 0;
