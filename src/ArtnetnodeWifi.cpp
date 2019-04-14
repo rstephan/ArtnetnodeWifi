@@ -47,7 +47,7 @@ ArtnetnodeWifi::ArtnetnodeWifi()
 */
 uint8_t ArtnetnodeWifi::begin(void)
 {
-  byte mac[WL_MAC_ADDR_LENGTH];
+  byte mac[6];
 
   Udp.begin(ARTNET_PORT);
   localIP = WiFi.localIP();
