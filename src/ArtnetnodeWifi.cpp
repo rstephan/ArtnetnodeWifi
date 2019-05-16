@@ -52,7 +52,7 @@ uint8_t ArtnetnodeWifi::begin(void)
   Udp.begin(ARTNET_PORT);
   localIP = WiFi.localIP();
   localMask = WiFi.subnetMask();
-  localBroadcast = IPAddress(localIP | ~localMask);
+  localBroadcast = IPAddress((uint32_t)localIP | ~(uint32_t)localMask);
 
   WiFi.macAddress(mac);
   PollReplyPacket.setMac(mac);
