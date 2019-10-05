@@ -6,7 +6,11 @@ Example Send DMX, transmit all received ArtNet messages out of the serial port.
 https://github.com/rstephan
 
 */
+#if defined(ARDUINO_ARCH_ESP32)
+#include <WiFi.h>
+#else
 #include <ESP8266WiFi.h>
+#endif
 #include <WiFiUdp.h>
 #include <ArtnetnodeWifi.h>
 
