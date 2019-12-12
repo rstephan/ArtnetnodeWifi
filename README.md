@@ -1,6 +1,7 @@
 # ArtnetnodeWifi
 
 This is a version for Arduino ESP8266 modules. It is adapted to use the ESP8266 Wifi instead of ethernet.
+Besides the ESP8266, it can also run on ESP32, WiFi101 (e.g. MKR1000) or WiFiNINA (e.g. NANO 33 IoT) devices.
 
 ## Installation
 
@@ -36,7 +37,7 @@ Send out DMX messages on the serial port at 250k
 Send out the debug-text on the serial port at 115.2k
 
 ## Copyright
-Stephan Ruloff, 2016
+Stephan Ruloff, 2016-2019
 https://github.com/rstephan
 
 # Art-Net
