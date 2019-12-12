@@ -24,8 +24,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <Arduino.h>
 #if defined(ARDUINO_ARCH_ESP32) || defined(ESP32)
 #include <WiFi.h>
-#else
+#elif defined(ARDUINO_ARCH_ESP8266)
 #include <ESP8266WiFi.h>
+#elif defined(ARDUINO_ARCH_SAMD)
+#if defined(ARDUINO_SAMD_MKR1000)
+#include <WiFi101.h>
+#else
+#include <WiFiNINA.h>
+#endif
+#else
+#error "Architecture not supported!"
 #endif
 #include <WiFiUdp.h>
 #include "OpCodes.h"
