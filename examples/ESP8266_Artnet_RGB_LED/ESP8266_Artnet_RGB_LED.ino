@@ -3,11 +3,9 @@ Example Artnet RGB LED, 3 LED (one per color) react on ArtNet messages from a ma
 Charles Yarnold 2015 - charlesyarnold@gmail.com
 https://github.com/solexious/ESP8266_artnet_led_node
 
-Stephan Ruloff 2016-2017
+Stephan Ruloff 2016-2019
 https://github.com/rstephan
 */
-#include <ESP8266WiFi.h>
-#include <WiFiUdp.h>
 #include <ArtnetnodeWifi.h>
 
 //Wifi settings
@@ -71,7 +69,9 @@ void setup()
   Serial.println();
   Serial.println("Connected");
 
+#if defined(ARDUINO_ARCH_ESP8266)
   analogWriteRange(255);
+#endif
 
   pinMode(pinR, OUTPUT);
   pinMode(pinG, OUTPUT);
@@ -96,8 +96,10 @@ void loop()
       Serial.println("Art Poll Packet");
     }
   }
+#if defined(ARDUINO_ARCH_ESP8266)
   if (WiFi.status() == 6) {
     ESP.reset();
   }
+#endif
   yield();
 }

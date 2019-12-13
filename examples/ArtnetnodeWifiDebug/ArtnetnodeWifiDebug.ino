@@ -6,7 +6,6 @@ https://github.com/rstephan
 
 */
 #include <ArtnetnodeWifi.h>
-#include <WiFiUdp.h>
 
 //Wifi settings
 const char* ssid = "ssid";
