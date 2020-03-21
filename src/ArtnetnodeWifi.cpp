@@ -2,8 +2,8 @@
 
 Copyright (c) Charles Yarnold charlesyarnold@gmail.com 2015
 
-Copyright (c) 2016 Stephan Ruloff
-https://github.com/rstephan
+Copyright (c) 2016-2020 Stephan Ruloff
+https://github.com/rstephan/ArtnetnodeWifi
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,12 +40,17 @@ ArtnetnodeWifi::ArtnetnodeWifi()
   for (int i = 0; i < DMX_MAX_OUTPUTS; i++) {
     memset(DMXBuffer[i], 0, sizeof(DMXBuffer[i]));
   }
+
+  sequence = 1;
+  physical = 0;
+  outgoingUniverse = 0;
+  dmxDataLength = 0;
 }
 
 /**
 @retval 0 Ok
 */
-uint8_t ArtnetnodeWifi::begin(void)
+uint8_t ArtnetnodeWifi::begin(String hostname)
 {
   byte mac[6];
 
@@ -59,7 +64,9 @@ uint8_t ArtnetnodeWifi::begin(void)
   PollReplyPacket.setIP(localIP);
   PollReplyPacket.canDHCP(true);
   PollReplyPacket.isDHCP(true);
-  
+
+  host = hostname;
+
   return 0;
 }
 
@@ -123,12 +130,69 @@ uint16_t ArtnetnodeWifi::read()
   return 0;
 }
 
+uint16_t ArtnetnodeWifi::makePacket(void)
+{
+  uint16_t len;
+  uint16_t version;
+
+  memcpy(artnetPacket, artnetId, sizeof(artnetId));
+  opcode = OpDmx;
+  artnetPacket[8] = opcode;
+  artnetPacket[9] = opcode >> 8;
+  version = 14;
+  artnetPacket[10] = version >> 8;
+  artnetPacket[11] = version;
+  artnetPacket[12] = sequence;
+  sequence++;
+  if (!sequence) {
+    sequence = 1;
+  }
+  artnetPacket[13] = physical;
+  artnetPacket[14] = outgoingUniverse;
+  artnetPacket[15] = outgoingUniverse >> 8;
+  len = dmxDataLength + (dmxDataLength % 2); // make an even number
+  artnetPacket[16] = len >> 8;
+  artnetPacket[17] = len;
+
+  return len;
+}
+
+int ArtnetnodeWifi::write(void)
+{
+  uint16_t len;
+
+  len = makePacket();
+  Udp.beginPacket(host.c_str(), ARTNET_PORT);
+  Udp.write(artnetPacket, ARTNET_DMX_START_LOC + len);
+
+  return Udp.endPacket();
+}
+
+int ArtnetnodeWifi::write(IPAddress ip)
+{
+  uint16_t len;
+
+  len = makePacket();
+  Udp.beginPacket(ip, ARTNET_PORT);
+  Udp.write(artnetPacket, ARTNET_DMX_START_LOC + len);
+
+  return Udp.endPacket();
+}
+
+void ArtnetnodeWifi::setByte(uint16_t pos, uint8_t value)
+{
+  if (pos > 512) {
+    return;
+  }
+  artnetPacket[ARTNET_DMX_START_LOC + pos] = value;
+}
+
+
 bool ArtnetnodeWifi::isBroadcast()
 {
-  if(Udp.remoteIP() == localBroadcast){
+  if (Udp.remoteIP() == localBroadcast){
     return true;
-  }
-  else{
+  } else {
     return false;
   }
 }
@@ -195,7 +259,8 @@ void ArtnetnodeWifi::disableDMX()
   DMXOutputStatus = false;
 }
 
-void ArtnetnodeWifi::enableDMXOutput(uint8_t outputID){
+void ArtnetnodeWifi::enableDMXOutput(uint8_t outputID)
+{
   DMXOutputs[outputID][2] = 1;
 
   int numEnabled = 0;
@@ -235,8 +300,7 @@ uint8_t ArtnetnodeWifi::setDMXOutput(uint8_t outputID, uint8_t uartNum, uint16_t
     DMXOutputs[outputID][2] = 0;
     PollReplyPacket.setSwOut(outputID, attachedUniverse);
     return 1;
-  }
-  else{
+  } else {
     return 0;
   }
 }

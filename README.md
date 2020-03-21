@@ -36,9 +36,13 @@ Send out DMX messages on the serial port at 250k
 
 Send out the debug-text on the serial port at 115.2k
 
+### Transmit
+
+Transmit a universe into the network.
+
 ## Copyright
-Stephan Ruloff, 2016-2019
-https://github.com/rstephan
+Stephan Ruloff, 2016-2020
+https://github.com/rstephan/ArtnetnodeWifi
 
 # Art-Net
 

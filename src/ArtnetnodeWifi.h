@@ -49,7 +49,7 @@ class ArtnetnodeWifi
 public:
   ArtnetnodeWifi();
 
-  uint8_t begin(void);
+  uint8_t begin(String hostname = "");
   uint16_t read();
 
   // Node identity
@@ -59,6 +59,26 @@ public:
   void setNumPorts(uint8_t num);
 
   void setStartingUniverse(uint16_t startingUniverse);
+
+  // Transmit
+  int write(void);
+  int write(IPAddress ip);
+  void setByte(uint16_t pos, uint8_t value);
+
+  inline void setUniverse(uint16_t universe)
+  {
+    outgoingUniverse = universe;
+  }
+
+  inline void setPhysical(uint8_t port)
+  {
+    physical = port;
+  }
+
+  inline void setLength(uint16_t len)
+  {
+    dmxDataLength = len;
+  }
 
   // DMX controls
   void enableDMX();
@@ -85,6 +105,7 @@ public:
 private:
   WiFiUDP Udp;
   PollReply PollReplyPacket;
+  String host;
 
   // Packet handlers
   uint16_t handleDMX(uint8_t nzs);
@@ -94,12 +115,17 @@ private:
   uint8_t artnetPacket[ARTNET_MAX_BUFFER];
   uint16_t packetSize;
   uint16_t opcode;
+  uint8_t sequence;
+  uint8_t physical;
+  uint16_t outgoingUniverse;
+  uint16_t dmxDataLength;
   IPAddress localIP;
   IPAddress localMask;
   IPAddress localBroadcast;
 
   // Packet functions
   bool isBroadcast();
+  uint16_t makePacket(void);
 
   // DMX settings
   bool DMXOutputStatus;
