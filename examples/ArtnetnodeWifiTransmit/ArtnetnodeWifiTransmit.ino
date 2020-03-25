@@ -24,9 +24,11 @@ const char* ssid = "ssid"; // CHANGE FOR YOUR SETUP
 const char* password = "pAsSwOrD"; // CHANGE FOR YOUR SETUP
 
 // Artnet settings
-ArtnetnodeWifi artnet;
 const int startUniverse = 0; // CHANGE FOR YOUR SETUP for most software this is 1, some software send out artnet first universe as 0.
 const char host[] = "2.1.1.1"; // CHANGE FOR YOUR SETUP your destination
+
+
+ArtnetnodeWifi artnet;
 
 
 // connect to wifi – returns true if successful or false if not
@@ -71,6 +73,8 @@ void setup()
   artnet.begin(host);
   artnet.setLength(3);
   artnet.setUniverse(startUniverse);
+  artnet.setShortName("Transmit Example"); // max. 17 characters
+  artnet.setLongName("ArtnetnodeWifiTransmit Example"); // max. 63 characters
 }
 
 void loop()
@@ -85,6 +89,8 @@ void loop()
     }
     // send out the Art-Net DMX data
     artnet.write();
+
+    artnet.read();
     delay(100);
   }
 }
