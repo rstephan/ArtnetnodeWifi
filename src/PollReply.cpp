@@ -96,6 +96,13 @@ void PollReply::setNumPorts(uint8_t num){
   packet.NumPortsLo = num;
 }
 
+void PollReply::setPortType(uint8_t port, uint8_t type)
+{
+  if (port < 4) {
+    packet.PortTypes[port] = type;
+  }
+}
+
 void PollReply::setSwOut(uint8_t port, uint16_t universe){
   if(port < 4){
     packet.SwOut[port] = universe & 0b0000000000001111;

@@ -167,6 +167,7 @@ public:
   void setNumPorts(uint8_t num);
 
   void setSwOut(uint8_t id, uint16_t universe);
+  void setPortType(uint8_t port, uint8_t type);
 
   void setOutputEnabled(uint8_t port);
   void setOutputDisabled(uint8_t port);

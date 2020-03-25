@@ -75,6 +75,7 @@ void setup()
   artnet.setUniverse(startUniverse);
   artnet.setShortName("Transmit Example"); // max. 17 characters
   artnet.setLongName("ArtnetnodeWifiTransmit Example"); // max. 63 characters
+  artnet.setPortType(0, 0x40);
 }
 
 void loop()

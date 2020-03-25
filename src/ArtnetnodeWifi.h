@@ -80,6 +80,11 @@ public:
     dmxDataLength = len;
   }
 
+  inline void setPortType(uint8_t port, uint8_t type)
+  {
+    PollReplyPacket.setPortType(port, type);
+  }
+
   // DMX controls
   void enableDMX();
   void disableDMX();
