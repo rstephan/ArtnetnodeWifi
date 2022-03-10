@@ -107,10 +107,18 @@ public:
     artDmxCallback = fptr;
   }
 
+  inline IPAddress& getSenderIp(void)
+  {
+    return senderIp;
+  }
+
+  static const char artnetId[];
+
 private:
   WiFiUDP Udp;
   PollReply PollReplyPacket;
   String host;
+  IPAddress senderIp;
 
   // Packet handlers
   uint16_t handleDMX(uint8_t nzs);
@@ -145,7 +153,6 @@ private:
   uint8_t msSinceDMXSend;
 
   void (*artDmxCallback)(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* data);
-  static const char artnetId[];
 };
 
 #endif
