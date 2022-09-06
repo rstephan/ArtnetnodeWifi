@@ -55,7 +55,7 @@ void onDmxFrame(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* d
   // Send "break" as a "slow" zero.
   Serial.begin(56700);
   Serial.write((uint8_t)0);
-  delayMicroseconds(220);
+  delayMicroseconds(300);
   Serial.begin(250000, SERIAL_8N2);
   
   Serial.write((uint8_t)0); // Start-Byte
