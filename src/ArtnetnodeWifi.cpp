@@ -55,8 +55,14 @@ uint8_t ArtnetnodeWifi::begin(String hostname)
   byte mac[6];
 
   Udp.begin(ARTNET_PORT);
-  localIP = WiFi.localIP();
-  localMask = WiFi.subnetMask();
+  if (WiFi.getMode() == WIFI_STA || WiFi.getMode() == WIFI_AP_STA) {
+    localIP = WiFi.localIP();
+    localMask = WiFi.subnetMask();
+  }
+  else {
+    localIP = WiFi.softAPIP();
+    localMask = IPAddress(255,255,255,0);
+  }
   localBroadcast = IPAddress((uint32_t)localIP | ~(uint32_t)localMask);
 
   WiFi.macAddress(mac);
