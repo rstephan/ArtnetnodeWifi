@@ -55,11 +55,23 @@ uint8_t ArtnetnodeWifi::begin(String hostname)
   byte mac[6];
 
   Udp.begin(ARTNET_PORT);
-  localIP = WiFi.localIP();
-  localMask = WiFi.subnetMask();
+  if (WiFi.getMode() == WIFI_STA) {
+    localIP = WiFi.localIP();
+    localMask = WiFi.subnetMask();
+    WiFi.macAddress(mac);
+  }
+  else {
+    localIP = WiFi.softAPIP();
+    struct ip_info info;
+    if(wifi_get_ip_info(SOFTAP_IF, &info)) {
+      localMask = info.netmask.addr;
+    } else { 
+      localMask = IPAddress(255, 255, 255, 0);
+    }
+    WiFi.softAPmacAddress(mac);
+  }
   localBroadcast = IPAddress((uint32_t)localIP | ~(uint32_t)localMask);
 
-  WiFi.macAddress(mac);
   PollReplyPacket.setMac(mac);
   PollReplyPacket.setIP(localIP);
   PollReplyPacket.canDHCP(true);
