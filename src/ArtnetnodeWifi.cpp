@@ -62,7 +62,12 @@ uint8_t ArtnetnodeWifi::begin(String hostname)
   }
   else {
     localIP = WiFi.softAPIP();
-    localMask = IPAddress(255,255,255,0);
+    struct ip_info info;
+    if(wifi_get_ip_info(SOFTAP_IF, &info)) {
+      localMask = info.netmask.addr;
+    } else { 
+      localMask = IPAddress(255, 255, 255, 0);
+    }
     WiFi.softAPmacAddress(mac);
   }
   localBroadcast = IPAddress((uint32_t)localIP | ~(uint32_t)localMask);
