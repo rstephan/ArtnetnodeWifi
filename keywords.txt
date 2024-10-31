@@ -15,6 +15,5 @@ disableDMX	KEYWORD2
 enableDMXOutput	KEYWORD2
 disableDMXOutput	KEYWORD2
 setDMXOutput	KEYWORD2
-tickDMX	KEYWORD2
 getDmxFrame	KEYWORD2
 setArtDmxCallback	KEYWORD2

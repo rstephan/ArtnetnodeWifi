@@ -33,9 +33,6 @@ ArtnetnodeWifi::ArtnetnodeWifi()
     DMXOutputs[i][2] = 0;
   }
 
-  // Start DMX tick clock
-  msSinceDMXSend = 0;
-
   // Init DMX buffers
   for (int i = 0; i < DMX_MAX_OUTPUTS; i++) {
     memset(DMXBuffer[i], 0, sizeof(DMXBuffer[i]));
@@ -303,14 +300,5 @@ uint8_t ArtnetnodeWifi::setDMXOutput(uint8_t outputID, uint8_t uartNum, uint16_t
     return 1;
   } else {
     return 0;
-  }
-}
-
-void ArtnetnodeWifi::tickDMX(uint32_t time)
-{
-  msSinceDMXSend += time;
-  if(msSinceDMXSend > DMX_MS_BETWEEN_TICKS){
-    sendDMX();
-    msSinceDMXSend = 0;
   }
 }

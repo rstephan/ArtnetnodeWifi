@@ -93,9 +93,6 @@ public:
 
   uint8_t setDMXOutput(uint8_t outputID, uint8_t uartNum, uint16_t attachedUniverse);
 
-  // DMX tick
-  void tickDMX(uint32_t time);
-  
   // Return a pointer to the start of the DMX data
   inline uint8_t* getDmxFrame(void)
   {
@@ -148,9 +145,7 @@ private:
   uint16_t startingUniverse;
 
   // DMX tick
-  void sendDMX();
   uint8_t* getDmxFrame(uint8_t outputID);
-  uint8_t msSinceDMXSend;
 
   void (*artDmxCallback)(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* data);
 };
